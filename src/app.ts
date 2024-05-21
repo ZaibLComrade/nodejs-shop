@@ -29,9 +29,8 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 // Handles all requsts for all path (Not Found)
 app.all("*", (req: Request, res: Response) => {
 	res.status(404).json({
-		path: req.url,
-		method: req.method,
-		message: "Not Found",
+		success: false,
+		message: "Route not Found",
 	});
 });
 

@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { IProduct, ProductSearchQuery } from "./product.interface";
 import { ProductSchema } from "./product.validation";
-import { createProduct, fetchProduct, removeProduct, updateProductDetails } from "./product.service";
+import {
+	createProduct,
+	fetchProduct,
+	removeProduct,
+	updateProductDetails,
+} from "./product.service";
 
 // Get one / many / all products
 export const getProducts = async (
@@ -11,17 +16,24 @@ export const getProducts = async (
 ) => {
 	try {
 		const searchQuery: ProductSearchQuery = {};
-		
-		const searchTerm = req.query?.searchTerm as string ?? "";
+
+		const searchTerm = (req.query?.searchTerm as string) ?? "";
 		const _id = req.params?.productId as string;
-		if(_id) searchQuery._id = _id;
-		
+		if (_id) searchQuery._id = _id;
+
 		const data = await fetchProduct(searchQuery, searchTerm);
-		res.status(200).json({
-			success: true,
-			message: "Products fetched successfully!",
-			data,
-		});
+		if (data.length) {
+			res.status(200).json({
+				success: true,
+				message: "Products fetched successfully!",
+				data,
+			});
+		} else {
+			res.status(400).json({
+				success: false,
+				message: "Product not found",
+			});
+		}
 	} catch (err) {
 		next(err);
 	}
@@ -48,26 +60,33 @@ export const postProduct = async (
 };
 
 // Update product details
-export const updateProduct = async(
+export const updateProduct = async (
 	req: Request,
 	res: Response,
-	next: NextFunction,
+	next: NextFunction
 ) => {
-	try{
+	try {
 		const _id = req.params.productId;
 		const updateDetails = req.body;
 		const data = await updateProductDetails(_id, updateDetails);
-		res.status(200).json({
-			success: true,
-			message: "Product updated successfully!",
-			data,
-		})
-	} catch(err) {
+		if (data) {
+			res.status(200).json({
+				success: true,
+				message: "Product updated successfully!",
+				data,
+			});
+		} else {
+			res.status(400).json({
+				success: false,
+				message: "Product not found",
+			});
+		}
+	} catch (err) {
 		next(err);
 	}
-}
+};
 
-export const deleteProduct = async(
+export const deleteProduct = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -79,8 +98,8 @@ export const deleteProduct = async(
 			success: true,
 			message: "Product deleted successfully!",
 			data: null,
-		})
-	} catch(err) {
+		});
+	} catch (err) {
 		next(err);
 	}
-}
+};

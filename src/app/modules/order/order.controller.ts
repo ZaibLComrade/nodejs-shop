@@ -19,13 +19,20 @@ export const getOrder = async (
 		if (email) searchQuery.email = email;
 
 		const data = await fetchOrders(searchQuery);
+		if(data.length) {
 		res.status(200).json({
-			succcess: true,
+			success: true,
 			message: email
 				? `Orders fetched successfully for ${email}!`
 				: "Orders fetched successfully",
 			data,
 		});
+		} else {
+			res.status(400).json({
+				success: false,
+				message: "Order not found"
+			})
+		}
 	} catch (err) {
 		next(err);
 	}
