@@ -3,7 +3,7 @@ import { IProduct, ProductSearchQuery } from "./product.interface";
 import { ProductSchema } from "./product.validation";
 import { createProduct, fetchProduct, removeProduct, updateProductDetails } from "./product.service";
 
-// Get one / all products
+// Get one / many / all products
 export const getProducts = async (
 	req: Request,
 	res: Response,
@@ -11,10 +11,12 @@ export const getProducts = async (
 ) => {
 	try {
 		const searchQuery: ProductSearchQuery = {};
+		
+		const searchTerm = req.query?.searchTerm as string ?? "";
 		const _id = req.params?.productId as string;
 		if(_id) searchQuery._id = _id;
 		
-		const data = await fetchProduct(searchQuery);
+		const data = await fetchProduct(searchQuery, searchTerm);
 		res.status(200).json({
 			success: true,
 			message: "Products fetched successfully!",

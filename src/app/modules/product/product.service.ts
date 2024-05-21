@@ -1,8 +1,9 @@
 import { IProduct, ProductSearchQuery } from "./product.interface";
 import Product from "./product.model";
 
-export const fetchProduct = async (searchQuery: ProductSearchQuery) => {
-	return await Product.find(searchQuery);
+export const fetchProduct = async (searchQuery: ProductSearchQuery, searchTerm?: string) => {
+	if(searchTerm) return await Product.find({ ...searchQuery, tags: { $in: searchTerm } })
+	return await Product.find(searchQuery)
 };
 
 export const createProduct = async (product: IProduct) => {

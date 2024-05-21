@@ -16,4 +16,5 @@ export interface IProduct {
 
 export interface ProductSearchQuery {
 	_id?: string;
+	searchTerm?: string;
 }
