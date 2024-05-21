@@ -13,3 +13,7 @@ export interface IProduct {
 		inStock: boolean;
 	}
 }
+
+export interface ProductSearchQuery {
+	_id?: string;
+}
