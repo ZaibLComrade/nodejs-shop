@@ -11,9 +11,8 @@ const orderSchema = new Schema({
 			message: ({ value }: { value: string }) =>
 				`${value} is not a valid email`,
 		},
-		unique: true,
 	},
-	productId: { type: String, unique: true },
+	productId: { type: String },
 	price: { type: Number, min: [0, "Price invalid"] },
 	quantity: { type: Number, min: [0, "Quantity invalid"] },
 });

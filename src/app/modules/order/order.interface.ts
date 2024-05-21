@@ -4,3 +4,8 @@ export interface IOrder {
 	price: number;
 	quantity: number;
 }
+
+export interface OrderSearchQuery {
+	_id?: string,
+	email?: string
+}

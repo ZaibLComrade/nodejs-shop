@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import productRoute from "./app/modules/product/product.route";
 import cors from "cors";
+import ordersRoute from "./app/modules/order/order.route";
 
 const app: Express = express();
 
@@ -8,6 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/products", productRoute);
+app.use("/api/orders", ordersRoute);
 
 // Global error handler
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
