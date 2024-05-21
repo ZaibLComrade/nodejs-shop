@@ -14,3 +14,7 @@ export const updateProductDetails = async (_id: string, details: IProduct) => {
 		returnDocument: "after",
 	});
 };
+
+export const removeProduct = async(_id: string) => {
+	return await Product.deleteOne({ _id });
+}
