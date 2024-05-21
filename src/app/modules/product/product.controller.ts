@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IProduct, ProductSearchQuery } from "./product.interface";
 import { ProductSchema } from "./product.validation";
-import { createProduct, fetchProduct } from "./product.service";
+import { createProduct, fetchProduct, updateProductDetails } from "./product.service";
 
 // Get one / all products
 export const getProducts = async (
@@ -44,3 +44,23 @@ export const postProduct = async (
 		next(err);
 	}
 };
+
+// Update product details
+export const updateProduct = async(
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try{
+		const _id = req.params.productId;
+		const updateDetails = req.body;
+		const data = await updateProductDetails(_id, updateDetails);
+		res.status(200).json({
+			success: true,
+			message: "Product updated successfully!",
+			data,
+		})
+	} catch(err) {
+		next(err);
+	}
+}

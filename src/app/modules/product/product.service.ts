@@ -1,4 +1,4 @@
-import { IProduct, ProductSearchQuery,  } from "./product.interface";
+import { IProduct, ProductSearchQuery } from "./product.interface";
 import Product from "./product.model";
 
 export const fetchProduct = async (searchQuery: ProductSearchQuery) => {
@@ -7,4 +7,10 @@ export const fetchProduct = async (searchQuery: ProductSearchQuery) => {
 
 export const createProduct = async (product: IProduct) => {
 	return await Product.create(product);
+};
+
+export const updateProductDetails = async (_id: string, details: IProduct) => {
+	return await Product.findOneAndUpdate({ _id }, details, {
+		returnDocument: "after",
+	});
 };
