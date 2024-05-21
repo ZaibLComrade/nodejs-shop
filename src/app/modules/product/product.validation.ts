@@ -6,7 +6,7 @@ export const ProductSchema = z.object({
 	price: z.number().positive(),
 	category: z.string(),
 	tags: z.array(z.string()),
-	variant: z.array(
+	variants: z.array(
 		z.object({
 			type: z.string(),
 			value: z.string(),

@@ -7,7 +7,7 @@ const productSchema = new Schema({
 	price: { type: Number, required: [true, "Price is required"] },
 	category: { type: String, required: [true, "Category is required"] },
 	tags: [String],
-	variant: [
+	variants: [
 		{
 			type: {
 				type: String,
