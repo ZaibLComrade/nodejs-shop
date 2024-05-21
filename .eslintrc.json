@@ -19,5 +19,8 @@
 		"no-undef": "error",
 		"prefer-const": "error",
 		"no-console": "warn"
+	},
+	"globals": {
+		"process": true
 	}
 }
