@@ -1,11 +1,14 @@
-import { Schema, UpdateQuery, model, models } from "mongoose";
+import { Schema, model, models } from "mongoose";
 import { IProduct, IProductMethods, ProductModel } from "./product.interface";
 
 const productSchema = new Schema<IProduct, ProductModel, IProductMethods>({
-	name: { type: String, required: [true, "Name is required"], text: true },
-	description: { type: String, text: true },
+	name: { type: String, required: [true, "Name is required"] },
+	description: { type: String },
 	price: { type: Number, required: [true, "Price is required"] },
-	category: { type: String, required: [true, "Category is required"], text: true },
+	category: {
+		type: String,
+		required: [true, "Category is required"],
+	},
 	tags: [String],
 	variants: [
 		{
@@ -28,6 +31,17 @@ const productSchema = new Schema<IProduct, ProductModel, IProductMethods>({
 		inStock: { type: Boolean, default: false },
 	},
 });
+
+productSchema.index(
+	{ name: "text", description: "text", category: "text" },
+	{
+		weights: {
+			name: 3,
+			category: 2,
+			description: 1,
+		},
+	}
+);
 
 // Instance method to check if product is in stock
 productSchema.methods.isInStock = function () {

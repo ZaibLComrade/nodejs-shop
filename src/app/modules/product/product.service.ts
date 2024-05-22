@@ -18,9 +18,31 @@ export const createProduct = async (product: IProduct) => {
 };
 
 export const updateProductDetails = async (_id: string, details: IProduct) => {
-	return await Product.findOneAndUpdate({ _id }, details, {
+	let updatedDoc = await Product.findOneAndUpdate({ _id }, details, {
 		returnDocument: "after",
 	});
+	if(!updatedDoc) throw new Error("Product not found");
+
+	// Updates inStock status according to quantity
+	if (
+		updatedDoc.inventory.quantity <= 0 &&
+		updatedDoc.inventory.inStock === true
+	) {
+		updatedDoc = await Product.findOneAndUpdate(
+			{ _id },
+			{ ...details, "inventory.inStock": false },
+			{ returnDocument: "after" }
+		);
+	} else {
+		updatedDoc = await Product.findOneAndUpdate(
+			{ _id },
+			{ ...details, "inventory.inStock": true },
+			{ returnDocument: "after" }
+		);
+	}
+
+	return updatedDoc;
+
 };
 
 export const removeProduct = async (_id: string) => {

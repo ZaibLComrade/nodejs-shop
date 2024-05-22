@@ -11,9 +11,9 @@ export const createOrder = async (order: IOrder) => {
 
 	// Modifies inventory acccordingly
 	const product = await Product.findOne({ _id });
-	product.inventory.quantity = product.inventory.quantity - order.quantity;
+	product.inventory.quantity -= order.quantity;
 	product.inventory.inStock = product.inventory.quantity > 0;
-	if (!product.inventory.inStock) {
+	if (product.inventory.quantity < 0) {
 		throw new Error("Insufficient quantity available in inventory");
 	}
 	product.save();
