@@ -15,7 +15,7 @@ export const getOrder = async (
 		// Modifying search query
 		const _id = req.params?.orderId as string;
 		if (_id) searchQuery._id = _id;
-		const email = req.query.email as string;
+		const email = req.query?.email as string;
 		if (email) searchQuery.email = email;
 
 		const data = await fetchOrders(searchQuery);

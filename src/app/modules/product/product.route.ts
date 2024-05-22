@@ -3,8 +3,7 @@ import {deleteProduct, getProducts, postProduct, updateProduct} from "./product.
 
 const productRoute = Router();
 
-productRoute.get("/", getProducts);
-productRoute.get("/:productId", getProducts); // Get one product
+productRoute.get("/:productId?", getProducts);
 productRoute.post("/", postProduct);
 productRoute.patch("/:productId", updateProduct); // Update a product
 productRoute.delete("/:productId", deleteProduct);

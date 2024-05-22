@@ -5,9 +5,11 @@ import ordersRoute from "./app/modules/order/order.route";
 
 const app: Express = express();
 
+// Essential middlewares
 app.use(express.json());
 app.use(cors());
 
+// Routers
 app.use("/api/products", productRoute);
 app.use("/api/orders", ordersRoute);
 
