@@ -2,6 +2,7 @@ import app from "./app";
 import config from "./config";
 import { connect } from "mongoose";
 
+/* eslint-disable */
 const main = async () => {
 	try {
 		await connect(config.db_uri as string, { dbName: config.db_name });

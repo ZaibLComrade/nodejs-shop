@@ -5,12 +5,11 @@
 	"main": "./dist/server.js",
 	"scripts": {
 		"build": "tsc",
-		"dev": "tsc -w",
-		"lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
+		"build:watch": "tsc -w",
+		"lint": "eslint .",
 		"lint:fix": "eslint --fix",
 		"format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-		"start": "nodemon ./dist/server.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "nodemon ./dist/server.js"
 	},
 	"keywords": [],
 	"author": "",
