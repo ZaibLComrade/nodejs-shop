@@ -40,50 +40,5 @@ productSchema.pre("save", function (next) {
 	next();
 });
 
-interface QuantityUpdate extends UpdateQuery<unknown> {
-	$inc: { "inventory.quantity": number };
-}
-
-productSchema.pre("findOneAndUpdate", async function (next) {
-	const doc = await this.model.findOne(this.getQuery());
-	const update = this.getUpdate() as QuantityUpdate;
-	const keys = Object.keys(update || {});
-
-	// Checks for quantity update
-	let quantityUpdate: false | number = false;
-	if (keys.includes("inventory.quantity")) {
-		quantityUpdate = update?.["inventory.quantity"];
-	}
-
-	// Checks for quantity increment
-	let quantityIncrement: false | number = false;
-	let isQuantityAvailable: boolean = true;
-	if (keys.includes("$inc")) {
-		const incrementKeys = Object.keys(update?.$inc);
-		if (incrementKeys.includes("inventory.quantity")) {
-			quantityIncrement = update?.$inc?.["inventory.quantity"];
-			isQuantityAvailable = !(
-				doc.inventory.quantity + quantityIncrement >
-				0
-			);
-		}
-	}
-
-	if(!isQuantityAvailable) throw new Error("Insufficient quantity available in inventory")
-
-	console.log(typeof quantityUpdate);
-	// Sets inStock property according to quantity updates
-	if (
-		(doc && doc.inventory.quantity <= 0) ||
-		(typeof quantityUpdate === "number" && quantityUpdate <= 0)
-	) {
-		this.set("inventory.inStock", false);
-	} else {
-		console.log(quantityUpdate);
-		this.set("inventory.inStock", true);
-	}
-	next();
-});
-
 const Product = models.Product || model<IProduct>("Product", productSchema);
 export default Product;

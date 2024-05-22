@@ -8,12 +8,15 @@ export const fetchOrders = async (searchQuery: OrderSearchQuery) => {
 
 export const createOrder = async (order: IOrder) => {
 	const _id = order.productId;
-	const updatedDoc = await Product.findOneAndUpdate(
-		{ _id },
-		{ $inc: { "inventory.quantity": 0 - order.quantity } },
-		{ returnDocument: "after" }
-	);
-	if(!updatedDoc) throw new Error("Invalid productId");
-	
+
+	// Modifies inventory acccordingly
+	const product = await Product.findOne({ _id });
+	product.inventory.quantity = product.inventory.quantity - order.quantity;
+	product.inventory.inStock = product.inventory.quantity > 0;
+	if (!product.inventory.inStock) {
+		throw new Error("Insufficient quantity available in inventory");
+	}
+	product.save();
+
 	return await Order.create(order);
 };
