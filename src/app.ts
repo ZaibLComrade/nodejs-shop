@@ -26,6 +26,13 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 	next();
 });
 
+// Checks server health
+app.all("/health", (req: Request, res: Response) => {
+	res.status(200).json({
+		message: "Server is running",
+	});
+});
+
 // Handles all requsts for all path (Not Found)
 app.all("*", (req: Request, res: Response) => {
 	res.status(404).json({
@@ -34,11 +41,5 @@ app.all("*", (req: Request, res: Response) => {
 	});
 });
 
-// Checks server health
-app.all("/health", (req: Request, res: Response) => {
-	res.status(200).json({
-		message: "Server is running",
-	});
-});
 
 export default app;
